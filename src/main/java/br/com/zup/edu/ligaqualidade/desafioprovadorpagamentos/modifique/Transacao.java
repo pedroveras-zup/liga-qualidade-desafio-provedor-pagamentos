@@ -46,4 +46,8 @@ public class Transacao {
     public EnumMetodoPagamento getMetodoPagamento() {
         return metodoPagamento;
     }
+
+    public String getIdTransacao() {
+        return idTransacao;
+    }
 }

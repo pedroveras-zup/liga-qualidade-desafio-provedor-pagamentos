@@ -3,6 +3,7 @@ package br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Solucao {
 
@@ -30,21 +31,10 @@ public class Solucao {
 	 * É esperado que o retorno respeite a ordem de recebimento
 	 */
 	public static List<String[]> executa(List<String> infoTransacoes, List<String> infoAdiantamentos) {
-
-		//Solução para os testes do CenarioRecebiveisSemAdiantamento
-
 		List<Transacao> transacoes = Transacao.toList(infoTransacoes);
-		List<String[]> recebiveis = new ArrayList<>();
+		Map<String, Adiantamento> adiantamentos = Adiantamento.toMap(infoAdiantamentos);
 
-		transacoes.forEach(transacao -> {
-			Recebimento recebimento = transacao.getMetodoPagamento().getRecebimento();
-			Recebivel recebivel = recebimento.receber(transacao);
-			recebiveis.add(new String[] {recebivel.getStatusComoString(), String.valueOf(recebivel.getValorOriginal()),String.valueOf(recebivel.getValorComDesconto()),
-					recebivel.getDataRecebimento()});
-
-		});
-
-		return recebiveis;
+		return ProcessaPagamento.processa(new Operacoes(transacoes, adiantamentos));
 	}
 
 }
